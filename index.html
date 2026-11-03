@@ -7,66 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js">
-// ── Neural Network Graph ──
-function drawNNGraph(){
-  var wrap=document.getElementById('nngWrap');
-  var svg=document.getElementById('nngSvg');
-  if(!wrap||!svg)return;
-  var wr=wrap.getBoundingClientRect();
-  if(wr.width<10)return;
-  svg.setAttribute('width',Math.round(wr.width));
-  svg.setAttribute('height',Math.round(wr.height));
-  svg.setAttribute('viewBox','0 0 '+Math.round(wr.width)+' '+Math.round(wr.height));
-  svg.innerHTML='';
-  function gp(el){
-    var r=el.getBoundingClientRect();
-    return{cx:r.left+r.width/2-wr.left,cy:r.top+r.height/2-wr.top,r:r.right-wr.left,l:r.left-wr.left};
-  }
-  var inputs=[].slice.call(document.querySelectorAll('[data-nng="input"]'));
-  var lstms=[].slice.call(document.querySelectorAll('[data-nng="lstm"]'));
-  var grus=[].slice.call(document.querySelectorAll('[data-nng="gru"]'));
-  var output=document.querySelector('[data-nng="output"]');
-  if(!output||inputs.length===0)return;
-  function mkPath(x1,y1,x2,y2,color,op,sw,dash,delay){
-    var mx=(x1+x2)/2;
-    var d='M'+x1+','+y1+' C'+mx+','+y1+' '+mx+','+y2+' '+x2+','+y2;
-    var p=document.createElementNS('http://www.w3.org/2000/svg','path');
-    p.setAttribute('d',d);p.setAttribute('stroke',color);p.setAttribute('stroke-width',String(sw));
-    p.setAttribute('fill','none');p.setAttribute('opacity',String(op));
-    if(dash){
-      p.setAttribute('stroke-dasharray','4 20');
-      p.style.animation='nngFlow '+(1.2+Math.random()*0.8).toFixed(2)+'s linear infinite';
-      p.style.animationDelay=delay.toFixed(2)+'s';
-    }
-    svg.appendChild(p);
-  }
-  function connectLayers(fromEls,toEls,color,offset){
-    fromEls.forEach(function(f,fi){
-      var fp=gp(f);
-      toEls.forEach(function(t,ti){
-        var tp=gp(t);
-        mkPath(fp.r+2,fp.cy,tp.l-2,tp.cy,color,0.07,1,false,0);
-        mkPath(fp.r+2,fp.cy,tp.l-2,tp.cy,color,0.5,1.5,true,fi*0.12+ti*0.18+offset);
-      });
-    });
-  }
-  connectLayers(inputs,lstms,'#9C27B0',0);
-  connectLayers(lstms,grus,'#FF9800',0.5);
-  connectLayers(grus,[output],'#1F8F82',1.0);
-}
-(function(){
-  setTimeout(drawNNGraph,400);
-  window.addEventListener('resize',function(){setTimeout(drawNNGraph,150)});
-  var w=document.getElementById('nngWrap');
-  if(w&&typeof IntersectionObserver!=='undefined'){
-    new IntersectionObserver(function(entries){
-      entries.forEach(function(e){if(e.isIntersecting)setTimeout(drawNNGraph,80);});
-    },{threshold:0.1}).observe(w);
-  }
-})();
-
-</script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
 <style>
 :root{
   --bg:#F1F3F5;--surface:#FFFFFF;--surface-alt:#E9ECEF;
